@@ -239,42 +239,36 @@
   .hero-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
   .hero-tile:hover img { transform: scale(1.08); }
   .land-stats { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
-  /* Etusivun prosessikaavio: Saaliista lautaselle */
-  .journey { margin: 4px 0 30px; }
-  .journey-sub { font-size: 14px; color: var(--muted); margin: 6px 0 0; max-width: 660px; }
-  .jflow { display: flex; align-items: stretch; gap: 8px; margin-top: 16px; }
-  .jstep { flex: 1 1 0; position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 5px; text-align: left; background: linear-gradient(162deg, var(--card), #eef7f5); border: 1px solid var(--line); border-radius: 18px; padding: 18px 18px 20px; cursor: pointer; transition: transform .16s, box-shadow .16s, border-color .16s; box-shadow: 0 1px 3px rgba(6,34,44,.06); overflow: hidden; animation: jrise .5s both; animation-delay: calc(var(--jd) * .08s); }
-  @keyframes jrise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-  .jstep::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(var(--teal), #2ec2b0); }
+  /* Etusivun prosessikaavio "Saaliista lautaselle" — kuvakortit */
+  .journey { margin: 8px 0 26px; }
+  .journey-sub { font-size: 13.5px; color: var(--muted); margin: 4px 0 0; max-width: 660px; }
+  .jflow { display: flex; align-items: stretch; gap: 10px; margin-top: 16px; }
+  .jstep { flex: 1 1 0; position: relative; display: flex; flex-direction: column; text-align: left; background: var(--card);
+    border: 1px solid var(--line); border-radius: 18px; overflow: hidden; cursor: pointer; padding: 0;
+    box-shadow: 0 1px 3px rgba(6,34,44,.06); transition: transform .16s, box-shadow .16s, border-color .16s; }
   .jstep:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(6,34,44,.16); border-color: var(--teal); }
-  .jstep.ext { background: #f1f5f5; border-style: dashed; }
-  .jstep.ext::before { background: linear-gradient(#a6bcbc, #cbd8d8); }
-  .jnum { font-size: 11.5px; font-weight: 800; color: var(--teal); letter-spacing: .12em; }
-  .jstep.ext .jnum { color: var(--muted); }
-  .jico { font-size: 30px; line-height: 1; margin: 2px 0; }
-  .jstep.ext .jico { filter: grayscale(.35); opacity: .85; }
-  .jtitle { font-size: 17px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+  .jstep.ext { border-style: dashed; }
+  .jstep-img { position: relative; height: 100px; background: linear-gradient(135deg, #d7efec, #eef7f6); overflow: hidden; flex-shrink: 0; }
+  .jstep-img img { width: 100%; height: 100%; object-fit: cover; }
+  .jstep-ov { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,24,31,.04), rgba(4,24,31,.42)); }
+  .jstep.ext .jstep-img img { filter: grayscale(.45); opacity: .8; }
+  .jnum { position: absolute; left: 10px; top: 10px; z-index: 1; font-size: 10.5px; font-weight: 800; letter-spacing: .06em;
+    text-transform: uppercase; color: #fff; background: rgba(6,34,44,.62); padding: 3px 9px; border-radius: 999px; }
+  .jstep-body { padding: 12px 15px 15px; display: flex; flex-direction: column; gap: 4px; }
+  .jstep-h { display: flex; align-items: center; gap: 8px; }
+  .jico { font-size: 22px; line-height: 1; }
+  .jtitle { font-size: 16px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
   .jtag { font-size: 12.5px; color: var(--muted); }
-  .jbadge { margin-top: 5px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); background: var(--chip); border-radius: 6px; padding: 2px 7px; }
+  .jbadge { margin-top: 4px; align-self: flex-start; font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .04em; color: var(--muted); background: var(--chip); border-radius: 6px; padding: 2px 7px; }
   .jarrow { align-self: center; color: var(--teal); opacity: .55; flex: 0 0 auto; display: flex; }
-  @media (max-width: 780px) { .jflow { flex-direction: column; } .jarrow { transform: rotate(90deg); margin: -2px 0; } }
-  .proc-hd { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
-  .proc-ico { font-size: 42px; line-height: 1; }
-  .proc-ico.ext { filter: grayscale(.35); opacity: .85; }
-  .proc-step { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--teal); }
-  .proc-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-  .land-stat { flex: 1 1 130px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; box-shadow: 0 1px 3px rgba(6,34,44,.06); }
-  .land-stat .ls-val { font-size: 30px; font-weight: 800; color: var(--teal); letter-spacing: -.02em; }
-  .land-stat .ls-lbl { font-size: 13px; color: var(--muted); }
-  .land-h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 0 0 14px; }
-  .land-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .land-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; cursor: pointer; transition: transform .16s, box-shadow .16s; box-shadow: 0 1px 3px rgba(6,34,44,.06); }
-  .land-card:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(6,34,44,.16); }
-  .land-card .lc-ico { font-size: 30px; }
-  .land-card h3 { margin: 10px 0 4px; font-size: 19px; letter-spacing: -.01em; }
-  .land-card p { margin: 0 0 12px; font-size: 14px; color: var(--muted); line-height: 1.5; }
-  .land-card .lc-go { font-size: 13.5px; font-weight: 700; color: var(--teal); }
-  @media (max-width: 640px) { .land-hero { flex-direction: column; padding: 28px 24px; } .hero-mosaic { max-width: none; width: 100%; } }
+  @media (max-width: 780px) {
+    .jflow { flex-direction: column; gap: 8px; }
+    .jarrow { transform: rotate(90deg); margin: -2px 0; }
+    .jstep { flex: 0 0 auto; flex-direction: row; align-items: stretch; min-height: 84px; }
+    .jstep-img { height: auto; width: 104px; align-self: stretch; }
+    .jstep-body { flex: 1; justify-content: center; }
+  }
   /* Miksi kalaa? — moderni julkinen sivu: kuvahero + syykortit */
   .wf-hero2 { position: relative; border-radius: 22px; overflow: hidden; min-height: 260px; display: flex; align-items: flex-end; margin-bottom: 22px; background: var(--ocean-700); }
   .wf-hero2-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -501,6 +495,34 @@ footer a.how-link:hover { opacity: 1; }
   .dc-opt-cnt { flex: 0 0 auto; min-width: 34px; text-align: right; font-size: 13px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
   .dc-hint { font-size: 12px; color: var(--muted); padding: 8px 4px 2px; }
   @media (max-width: 640px) { .dc-opt-lbl { flex-basis: 42%; } }
+  /* Reseptit: kokoontaitettava "Ilman"-palkki, näkymävalitsin, tiivis lista */
+  .pt-bar .pt-chev { width: auto; height: auto; padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+
+  .exbar-wrap { margin: 0 0 12px; }
+  .exbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; text-align: left; cursor: pointer;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; font: 600 14px system-ui; color: var(--ink); }
+  .exbar:hover { border-color: var(--coral); }
+  .exbar.open { border-color: rgba(255,107,87,.45); background: linear-gradient(135deg, rgba(255,107,87,.06), transparent); }
+  .exbar .meta { font-weight: 400; }
+  .exbar .pt-chev { background: var(--chip); color: var(--coral); }
+  .exbar-wrap .exrow { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 2px 2px; }
+
+  .listctrls { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 14px 0 10px; flex-wrap: wrap; }
+  .viewtoggle { display: inline-flex; background: var(--chip); border-radius: 999px; padding: 3px; gap: 2px; }
+  .viewtoggle button { border: none; background: none; font: 600 13px system-ui; color: var(--muted); padding: 6px 15px; border-radius: 999px; cursor: pointer; }
+  .viewtoggle button.on { background: var(--card); color: var(--teal); box-shadow: 0 1px 3px rgba(6,34,44,.12); }
+  .aitoggle-sm { border: 1px solid var(--line); background: var(--card); color: var(--muted); font: 600 12.5px system-ui; padding: 7px 13px; border-radius: 999px; cursor: pointer; }
+  .aitoggle-sm.on { border-color: #e0b53c; background: #fdf6e3; color: #8a6d1a; }
+
+  /* Tiivis (teksti) -lista */
+  .reclist-compact { display: flex; flex-direction: column; gap: 6px; }
+  .card-c { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; cursor: pointer; transition: border-color .14s, background .14s; }
+  .card-c:hover { border-color: var(--teal); background: linear-gradient(135deg, rgba(14,124,134,.05), transparent); }
+  .card-c .cc-main { flex: 1; min-width: 0; }
+  .card-c .cc-title { font-size: 14.5px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .card-c .cc-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 3px; }
+  .card-c .cc-site { font-size: 12px; color: var(--muted); }
+  .card-c .cc-go { color: var(--teal); font-size: 22px; font-weight: 700; flex-shrink: 0; line-height: 1; }
   /* Palkin ✨-segmentti: AI/heuristisesti päätelty osuus raidoitettuna */
   .brow .bfill.hasai { border-radius: 0; }
   .brow .bfill.aix { background: repeating-linear-gradient(-55deg, var(--teal) 0 4px, #9fd8d2 4px 8px);
@@ -642,12 +664,13 @@ li.sc-hi { background: color-mix(in srgb, var(--teal) 8%, transparent); border-r
     header { padding: 15px 16px 26px; }
     main { padding: 16px 14px 54px; }
 
-    /* Hampurilaispainike: kiinteästi oikeaan yläkulmaan, aina saavutettavissa. */
-    .nav-burger { display: flex; position: fixed; top: 12px; right: 12px; z-index: 62;
-      flex-direction: column; justify-content: center; align-items: center; gap: 5px;
-      width: 44px; height: 44px; border: none; border-radius: 12px; cursor: pointer;
-      background: rgba(6,34,44,.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); padding: 0; }
-    .nav-burger span { display: block; width: 20px; height: 2.4px; background: #fff; border-radius: 2px; transition: transform .22s, opacity .22s; }
+    /* Hampurilaispainike + "Valikko"-teksti: kiinteästi oikeaan yläkulmaan. */
+    .nav-burger { display: inline-flex; position: fixed; top: 12px; right: 12px; z-index: 62;
+      align-items: center; gap: 8px; height: 42px; border: none; border-radius: 999px; cursor: pointer;
+      background: var(--teal); box-shadow: 0 4px 14px rgba(6,34,44,.28); padding: 0 15px 0 13px; }
+    .nav-burger .nb-lines { display: flex; flex-direction: column; justify-content: center; gap: 4.5px; width: 20px; }
+    .nav-burger .nb-lines span { display: block; width: 20px; height: 2.4px; background: #fff; border-radius: 2px; transition: transform .22s, opacity .22s; }
+    .nav-burger .nb-lbl { color: #fff; font: 700 14px system-ui; }
     header .author-credit { display: none; }
 
     /* navwrap = oikealta liukuva laatikko */
@@ -663,10 +686,10 @@ li.sc-hi { background: color-mix(in srgb, var(--teal) 8%, transparent); border-r
     body.nav-open .nav-backdrop { opacity: 1; pointer-events: auto; }
 
     /* Hampurilainen → rasti kun auki */
-    body.nav-open .nav-burger { background: var(--teal); }
-    body.nav-open .nav-burger span:nth-child(1) { transform: translateY(7.4px) rotate(45deg); }
-    body.nav-open .nav-burger span:nth-child(2) { opacity: 0; }
-    body.nav-open .nav-burger span:nth-child(3) { transform: translateY(-7.4px) rotate(-45deg); }
+    body.nav-open .nav-burger .nb-lines span:nth-child(1) { transform: translateY(6.9px) rotate(45deg); }
+    body.nav-open .nav-burger .nb-lines span:nth-child(2) { opacity: 0; }
+    body.nav-open .nav-burger .nb-lines span:nth-child(3) { transform: translateY(-6.9px) rotate(-45deg); }
+    body.nav-open .nav-burger .nb-lbl::after { content: ' — sulje'; }
 
     /* Navit pystyyn laatikon sisällä */
     #nav, #nav2 { position: static; flex-direction: column; align-items: stretch;
@@ -678,6 +701,7 @@ li.sc-hi { background: color-mix(in srgb, var(--teal) 8%, transparent); border-r
 
     /* Sisältörivit mahtumaan ruudulle */
     .rtoolbar { flex-direction: column; align-items: stretch; gap: 10px; }
+    .rtoolbar .grow { flex: 0 0 auto; min-width: 0; }   /* korjaa 240px-korkean tyhjän tilan hakukentän alla */
     .rtoolbar .chips, .exrow, .chips, .statrow, .land-stats, .wf-stats, .anlx-chipbar { flex-wrap: wrap; }
     .prose, article.prose.wide, .anlx-prose, .wf-prose { max-width: 100%; }
     article.prose { padding: 22px 18px; }
@@ -720,11 +744,42 @@ li.sc-hi { background: color-mix(in srgb, var(--teal) 8%, transparent); border-r
 mark.hs-mark.hs-cur { background: #ff9d3f; }
 .hs-hint { font-size: 13px; color: var(--muted); padding: 6px 0; }
 @media (max-width: 900px) { .hdr-search { position: static; margin-top: 10px; } .hdr-search input { max-width: none; flex: 1; } .hs-panel { right: 3vw; } }
+/* Palaute: kelluva nappi + paneeli (Unitas-malli, MyFood-teema) + ⚑ AI-liput */
+#fb-fab { position: fixed; right: 20px; bottom: 20px; z-index: 2147483500; width: 52px; height: 52px; border: 0;
+  border-radius: 50%; cursor: pointer; display: grid; place-items: center; color: #fff;
+  background: linear-gradient(135deg, var(--teal, #0e7c86), var(--teal-dark, #0e4c56));
+  box-shadow: 0 10px 30px -8px rgba(4, 24, 31, .5), 0 2px 6px rgba(4, 24, 31, .2); transition: transform .15s, box-shadow .15s; }
+#fb-fab:hover { transform: translateY(-2px); box-shadow: 0 16px 38px -10px rgba(4, 24, 31, .55); }
+#fb-fab svg { width: 23px; height: 23px; }
+#fb-panel { position: fixed; right: 20px; bottom: 84px; z-index: 2147483500; width: 330px; max-width: calc(100vw - 32px);
+  background: #fff; color: #10333c; border-radius: 16px; box-shadow: 0 26px 64px -18px rgba(4, 24, 31, .55);
+  padding: 16px; opacity: 0; visibility: hidden; transform: translateY(10px) scale(.98); transform-origin: bottom right;
+  transition: opacity .16s, transform .16s, visibility .16s; font: 500 13px/1.45 inherit; }
+#fb-panel.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+#fb-panel .fb-head { display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+#fb-panel .fb-x { border: 0; background: none; cursor: pointer; color: #94a3b8; font-size: 18px; line-height: 1; padding: 2px 4px; }
+#fb-panel .fb-ctx { font-size: 11.5px; color: #52707a; background: #f2f7f7; border: 1px solid #e2ecec;
+  border-radius: 8px; padding: 7px 10px; margin-bottom: 12px; line-height: 1.5; }
+#fb-panel label { display: block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #7d97a0; margin: 0 0 5px; }
+#fb-panel .fb-opt { text-transform: none; letter-spacing: 0; font-weight: 500; }
+#fb-panel select, #fb-panel input, #fb-panel textarea { width: 100%; box-sizing: border-box; border: 1.5px solid #dfe8ea;
+  border-radius: 10px; padding: 9px 11px; font: 500 13px inherit; color: #10333c; background: #fff; outline: none; }
+#fb-panel select:focus, #fb-panel input:focus, #fb-panel textarea:focus { border-color: var(--teal, #0e7c86); }
+#fb-panel textarea { margin-top: 10px; min-height: 88px; resize: vertical; }
+#fb-panel .fb-send { width: 100%; margin-top: 12px; border: 0; border-radius: 10px; cursor: pointer; color: #fff;
+  padding: 11px; font: 700 13px inherit; background: linear-gradient(135deg, var(--teal, #0e7c86), var(--teal-dark, #0e4c56)); }
+#fb-panel .fb-send:hover { filter: brightness(1.08); }
+#fb-panel .fb-done { text-align: center; padding: 22px 8px; font-weight: 700; color: var(--teal-dark, #0e4c56); }
+/* ⚑-nappi AI-päätelmien vieressä reseptidialogissa */
+.fb-flag { border: 1px solid #e5c76b; background: #fff8e1; color: #7a5b00; font: 700 10.5px inherit;
+  border-radius: 999px; padding: 1px 8px; cursor: pointer; margin-left: 6px; vertical-align: 1px; }
+.fb-flag:hover { background: #ffedb3; }
+@media (max-width: 560px) { #fb-fab { right: 14px; bottom: 14px; } #fb-panel { right: 12px; bottom: 76px; } }
 </style>
 </head>
 <body class="published">
 <header>
-  <button id="navBurger" class="nav-burger" aria-label="Avaa valikko" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  <button id="navBurger" class="nav-burger" aria-label="Avaa valikko" onclick="toggleNav()"><span class="nb-lines"><span></span><span></span><span></span></span><span class="nb-lbl">Valikko</span></button>
   <a class="author-credit" href="https://longshoreforrest.github.io/myself/" target="_blank" rel="noopener" title="Sivuston tekijä — lue lisää">✍️ <span>Tekijä</span></a>
   <div class="brandrow">
     <h1>🐟 Kalakokki<span class="fin"> · reseptien tekoälyhaku</span></h1>
@@ -990,6 +1045,13 @@ function methodBadges(it) {
 }
 
 function card(it) {
+  // Tiivis (teksti) -näkymä: ei kuvaa, yksi rivi otsikkoa + tunnisteet.
+  if (typeof cardView !== 'undefined' && cardView === 'tiivis') {
+    return `<div class="card-c" onclick="showDetail('${it.id}')">
+      <div class="cc-main"><div class="cc-title">${esc(it.title)}</div>
+        <div class="cc-meta">${methodBadges(it)}<span class="cc-site">${esc(it.site)}</span></div></div>
+      <span class="cc-go">›</span></div>`;
+  }
   const img = it.image_file
     ? `<img loading="lazy" src="${CRAWLER + esc(it.image_file)}" onerror="this.outerHTML='<div class=noimg>🐟</div>'">`
     : `<div class="noimg">🐟</div>`;
@@ -1213,7 +1275,11 @@ function chipRow() {
     <button class="clearall" onclick="clearAll()">Tyhjennä kaikki</button></div>`;
 }
 
-let chartsOpen = localStorage.getItem('myfood_chartsOpen') !== '0';
+let chartsOpen = localStorage.getItem('myfood_chartsOpen') === '1';  // oletus: kiinni
+let exOpen = localStorage.getItem('myfood_exOpen') === '1';          // "Ilman"-rivi kiinni oletuksena
+let cardView = localStorage.getItem('myfood_cardView') || 'kuvat';   // 'kuvat' | 'tiivis'
+window.toggleEx = () => { exOpen = !exOpen; localStorage.setItem('myfood_exOpen', exOpen ? '1' : '0'); render(); };
+window.setCardView = v => { cardView = v; localStorage.setItem('myfood_cardView', v); const b = document.getElementById('recipeBody'); if (b) b.innerHTML = renderBody(); document.querySelectorAll('.viewtoggle button').forEach(x => x.classList.toggle('on', x.dataset.v === v)); };
 window.toggleCharts = () => {
   chartsOpen = !chartsOpen;
   localStorage.setItem('myfood_chartsOpen', chartsOpen ? '1' : '0');
@@ -1296,7 +1362,8 @@ function renderBody() {
       onclickName: 'drillSite' }));
     panel = `<div class="chartwrap">${charts.join('')}</div>`;
   }
-  return `${panel}<div class="grid">${cur.map(card).join('')}</div>`;
+  const cls = cardView === 'tiivis' ? 'reclist reclist-compact' : 'grid';
+  return `${panel}<div class="${cls}">${cur.map(card).join('')}</div>`;
 }
 
 function renderStats() {
@@ -1322,10 +1389,14 @@ function renderReseptit(el) {
         value="${esc(q)}" oninput="onSearchInput(this.value)"></div>
       <div class="chips">${pills}</div>
     </div>
-    <div class="exrow"><span class="exlabel">🚫 Ilman:</span>${Object.entries(EX_GROUPS).map(([g, gr]) =>
-      `<button class="exchip ${F.exGroups.includes(g) ? 'on' : ''}" onclick="drillExclude('${g}')">${esc(gr.label)}</button>`).join('')}
-      <button class="exchip aitoggle ${aiOn ? 'on' : ''}" onclick="toggleAI()"
-        title="Kun päällä, AI:n sisällöstä päättelemät valmistustavat ja kestot täydentävät puuttuvia tietoja. Päätellyt arvot näkyvät ✨-merkittyinä ja raidoitettuina — suoraan lähteestä tulevaa dataa ei koskaan korvata.">✨ AI-täydennys: ${aiOn ? 'käytössä' : 'pois'}</button></div>
+    <div class="exbar-wrap">
+      <button class="exbar ${exOpen ? 'open' : ''}" onclick="toggleEx()" aria-expanded="${exOpen}">
+        <span>🚫 Ilman <span class="meta">— allergiat & poissulut${F.exGroups.length ? ` · ${F.exGroups.length} valittu` : ''}</span></span>
+        <span class="pt-chev">${exOpen ? 'Piilota ▲' : 'Avaa ▼'}</span>
+      </button>
+      ${exOpen ? `<div class="exrow">${Object.entries(EX_GROUPS).map(([g, gr]) =>
+        `<button class="exchip ${F.exGroups.includes(g) ? 'on' : ''}" onclick="drillExclude('${g}')">${esc(gr.label)}</button>`).join('')}</div>` : ''}
+    </div>
     <div id="breadcrumbSlot">${chipRow()}</div>
     <div id="statSlot">${renderStats()}</div>
     <div id="decisionsSlot">${renderDecisions()}</div>
@@ -1335,8 +1406,16 @@ function renderReseptit(el) {
         <span class="pt-sub">${chartsOpen
           ? 'Klikkaa palkkia rajataksesi reseptejä — piilota suodattimet painamalla tästä'
           : 'Avaa ja rajaa reseptejä lajin, valmistustavan, aineksen, keston tai lähteen mukaan'}</span></span>
-      <span class="pt-chev">${chartsOpen ? '▲' : '▼'}</span>
+      <span class="pt-chev">${chartsOpen ? 'Piilota ▲' : 'Avaa ▼'}</span>
     </button>
+    <div class="listctrls">
+      <div class="viewtoggle" role="group" aria-label="Näkymä">
+        <button class="${cardView === 'kuvat' ? 'on' : ''}" data-v="kuvat" onclick="setCardView('kuvat')">🖼️ Kuvat</button>
+        <button class="${cardView === 'tiivis' ? 'on' : ''}" data-v="tiivis" onclick="setCardView('tiivis')">☰ Tiivis</button>
+      </div>
+      <button class="aitoggle-sm ${aiOn ? 'on' : ''}" onclick="toggleAI()"
+        title="AI täydentää puuttuvia valmistustapoja/kestoja (✨-merkityt). Suoraa dataa ei korvata.">✨ AI ${aiOn ? 'käytössä' : 'pois'}</button>
+    </div>
     <div id="recipeBody">${renderBody()}</div>`;
   const inp = document.getElementById('recipeSearch');
   if (inp && q && document.activeElement !== inp) { inp.focus(); inp.setSelectionRange(q.length, q.length); }
@@ -1455,8 +1534,8 @@ function renderDecisions() {
 
   return `<button class="pt-bar dc-bar ${decisionsOpen ? 'open' : ''}" onclick="dcToggle()" aria-expanded="${decisionsOpen}">
       <span class="pt-ico">🧭</span>
-      <span class="pt-txt"><strong>Päätöksesi</strong><span class="pt-sub">${decisionsOpen ? 'Rakenna valintasi askel kerrallaan — näet heti montako reseptiä jää' : 'Ohjattu valinta: kala, valmistustapa, aika, allergiat… askel kerrallaan'}</span></span>
-      <span class="pt-chev">${decisionsOpen ? '▲' : '▼'}</span>
+      <span class="pt-txt"><strong>Päätöksesi</strong><span class="pt-sub">${decisionsOpen ? 'Rakenna valintasi askel kerrallaan — paina tästä sulkeaksesi' : 'Ohjattu valinta: kala, valmistustapa, aika, allergiat… askel kerrallaan'}</span></span>
+      <span class="pt-chev">${decisionsOpen ? 'Piilota ▲' : 'Avaa ▼'}</span>
     </button>${body}`;
 }
 /* Kalan valmistelu -sivu: dynaamiset suodattimet (laji × tyyppi × aihe × haku).
@@ -2089,15 +2168,19 @@ function renderEtusivu(el) {
         <p class="journey-sub">Kalakeittiön neljä vaihetta — klikkaa vaihetta nähdäksesi lisää ja hyppääksesi oikeaan osioon.</p>
       </div>
       <div class="jflow">
-        ${JOURNEY.map((s, i) => `
-          <button class="jstep${s.ext ? ' ext' : ''}" onclick="processShow('${s.key}')" style="--jd:${i}">
-            <span class="jnum">${s.num}</span>
-            <span class="jico">${s.ico}</span>
-            <span class="jtitle">${esc(s.title)}</span>
-            <span class="jtag">${esc(s.tag)}</span>
-            ${s.ext ? '<span class="jbadge">enimmäkseen tämän ulkopuolella</span>' : ''}
+        ${JOURNEY.map((s, i) => {
+          const jr = recipes.filter(r => r.image_file)[i];
+          const jimg = jr ? CRAWLER + esc(jr.image_file) : '';
+          return `
+          <button class="jstep${s.ext ? ' ext' : ''}" onclick="processShow('${s.key}')">
+            <div class="jstep-img">${jimg ? `<img loading="lazy" src="${jimg}" alt="" onerror="this.remove()">` : ''}<span class="jstep-ov"></span><span class="jnum">Vaihe ${s.num}</span></div>
+            <div class="jstep-body">
+              <div class="jstep-h"><span class="jico">${s.ico}</span><span class="jtitle">${esc(s.title)}</span></div>
+              <span class="jtag">${esc(s.tag)}</span>
+              ${s.ext ? '<span class="jbadge">enimmäkseen tämän ulkopuolella</span>' : ''}
+            </div>
           </button>
-          ${i < JOURNEY.length - 1 ? '<span class="jarrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' : ''}`).join('')}
+          ${i < JOURNEY.length - 1 ? '<span class="jarrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' : ''}`; }).join('')}
       </div>
     </section>
     <div class="land-stats">
@@ -2454,17 +2537,17 @@ function aiProvenance(it) {
   const eff = effMethods(it);
   if (eff.ai && it.ai.method) {
     const t = it.ai.method;
-    parts.push(`<b>Valmistustapa "${esc(t.v)}"</b> on AI-päätelty (varmuus ${Math.round(t.c * 100)} %)${t.e ? ` — ”${esc(t.e)}”` : ''}. Lähde ilmoitti: ${esc(it.method || 'ei mitään')}.`);
+    parts.push(`<b>Valmistustapa "${esc(t.v)}"</b> on AI-päätelty (varmuus ${Math.round(t.c * 100)} %)${t.e ? ` — ”${esc(t.e)}”` : ''}. Lähde ilmoitti: ${esc(it.method || 'ei mitään')}.${fbFlagBtn(it.id, 'valmistustapa', t.v)}`);
   }
   const em = effMinutes(it);
   if (em.v != null && em.o !== 'suora' && it.ai.total_minutes) {
     const t = it.ai.total_minutes;
-    parts.push(`<b>Kesto ~${t.v} min</b> on ${em.o === 'ai' ? 'AI-arvio' : 'poimittu ohjeteksteistä'} (varmuus ${Math.round(t.c * 100)} %)${t.e ? ` — ${esc(t.e)}` : ''}. Lähde ei ilmoita kokonaisaikaa.`);
+    parts.push(`<b>Kesto ~${t.v} min</b> on ${em.o === 'ai' ? 'AI-arvio' : 'poimittu ohjeteksteistä'} (varmuus ${Math.round(t.c * 100)} %)${t.e ? ` — ${esc(t.e)}` : ''}. Lähde ei ilmoita kokonaisaikaa.${fbFlagBtn(it.id, 'kesto', t.v + ' min')}`);
   }
   const es = effSpecies(it);
   const aiSp = (it.ai_species || []).filter(s => es.aiSlugs.has(s.slug));
   if (aiSp.length) {
-    parts.push(`<b>Lajit ${aiSp.map(s => `"${esc(SPEC[s.slug]?.name_fi || s.slug)}"`).join(', ')}</b> AI tunnisti sisällöstä (${aiSp.map(s => `${Math.round(s.c * 100)} %`).join(', ')})${aiSp[0].e ? ` — ${esc(aiSp[0].e)}` : ''}. Luokiteltu laji: ${esc(SPEC[es.own]?.name_fi || es.own)}.`);
+    parts.push(`<b>Lajit ${aiSp.map(s => `"${esc(SPEC[s.slug]?.name_fi || s.slug)}"`).join(', ')}</b> AI tunnisti sisällöstä (${aiSp.map(s => `${Math.round(s.c * 100)} %`).join(', ')})${aiSp[0].e ? ` — ${esc(aiSp[0].e)}` : ''}. Luokiteltu laji: ${esc(SPEC[es.own]?.name_fi || es.own)}.${fbFlagBtn(it.id, 'lajit', aiSp.map(s => SPEC[s.slug]?.name_fi || s.slug).join(', '))}`);
   }
   return parts.length ? `<div class="ai-prov">✨ ${parts.join('<br>')}</div>` : '';
 }
@@ -3553,6 +3636,192 @@ window.__MYPA_ENDPOINT__ = 'https://mypa.longshoreforrest.workers.dev/collect';
             window.mypa.send('search', { query: q.slice(0, 80) });
           }, 900);
         };
+      }
+    } catch (e) {}
+  });
+})();
+/* ===================== PALAUTE (kelluva nappi) =====================
+   Unitas-mallin mukainen kontekstitietoinen palaute (malli:
+   IRAC-Prototypes/Kirjanpitoala/unitas-user.js), MyFood-sovituksin:
+   - Ei Google-kirjautumista — vapaaehtoinen nimimerkki (localStorage)
+   - Konteksti kolmella tasolla: sivu+suodattimet → resepti → ✨ AI-attribuutti
+   - Lähetys mypa-beaconilla event='feedback' → sama D1 kuin analytiikka;
+     luetaan lue-palautteet-skillillä / dashboardista. */
+(function () {
+  var NICK_KEY = 'mypa_nick';
+  var ctx = null;            // asetetaan kun resepti/popup avataan
+  window.fbSetCtx = function (o) { ctx = o || null; };
+  window.fbClearCtx = function () { ctx = null; };
+
+  // ⚑-nappi AI-päätelmien viereen (kutsutaan aiProvenance()-renderissä)
+  window.fbFlagBtn = function (recipeId, attr, value) {
+    var v = String(value).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    return ' <button class="fb-flag" onclick="event.stopPropagation();fbFlagAI(\'' + recipeId + '\',\'' + attr + '\',\'' + v + '\')" ' +
+      'title="Ilmoita virhe tästä tekoälyn päätelmästä">⚑ ilmoita virhe</button>';
+  };
+  window.fbFlagAI = function (recipeId, attr, value) {
+    var it = (D.items || []).find(function (i) { return i.id === recipeId; }) || {};
+    fbSetCtx({ type: 'ai-attribuutti', recipe_id: recipeId, recipe_title: it.title || '', recipe_site: it.site || '',
+               attr: attr, attr_value: String(value) });
+    openPanel(true);
+  };
+
+  function activeFilters() {
+    if (typeof F === 'undefined' || tab !== 'reseptit') return '';
+    var p = [];
+    if (F.species) p.push('laji=' + F.species);
+    if (F.method) p.push('tapa=' + F.method);
+    if (F.ingCat) p.push('kategoria=' + F.ingCat);
+    if ((F.ings || []).length) p.push('aines=' + F.ings.join(','));
+    if (F.time != null) p.push('kesto=' + F.time);
+    if (F.site) p.push('lahde=' + F.site);
+    if (F.side) p.push('lisuke=' + F.side);
+    if ((F.exGroups || []).length) p.push('ilman=' + F.exGroups.join(','));
+    return p.join('&');
+  }
+
+  function tabLabel() {
+    try {
+      var t = (typeof TABS !== 'undefined' ? TABS : []).concat(typeof INTERNAL_TABS !== 'undefined' ? INTERNAL_TABS : [])
+        .find(function (x) { return x[0] === tab; });
+      return t ? t[1] : tab;
+    } catch (e) { return tab; }
+  }
+
+  function ctxHtml() {
+    var rows = ['Sivu: <b>' + esc(tabLabel()) + '</b>'];
+    var f = activeFilters();
+    if (f) rows.push('Suodattimet: <b>' + esc(f) + '</b>');
+    if (ctx && ctx.type === 'resepti') rows.push('Resepti: <b>' + esc(ctx.recipe_title) + '</b> (' + esc(ctx.recipe_site) + ')');
+    if (ctx && ctx.type === 'ai-attribuutti') rows.push('✨ AI-päätelmä: <b>' + esc(ctx.attr) + ' = ' + esc(ctx.attr_value) + '</b><br>Resepti: <b>' + esc(ctx.recipe_title) + '</b>');
+    if (ctx && ctx.type === 'kulttuuri') rows.push('Kulttuurialue: <b>' + esc(ctx.name) + '</b>');
+    if (ctx && ctx.type === 'laji') rows.push('Kalalaji: <b>' + esc(ctx.name) + '</b>');
+    if (ctx && ctx.type === 'lahde') rows.push('Lähde: <b>' + esc(ctx.name) + '</b>');
+    return rows.join('<br>');
+  }
+
+  var fab, panel;
+  function build() {
+    if (document.getElementById('fb-fab')) return;
+    fab = document.createElement('button');
+    fab.id = 'fb-fab'; fab.type = 'button';
+    fab.title = 'Anna palautetta'; fab.setAttribute('aria-label', 'Anna palautetta');
+    fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+    document.body.appendChild(fab);
+
+    panel = document.createElement('div');
+    panel.id = 'fb-panel'; panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-label', 'Anna palautetta');
+    panel.innerHTML =
+      '<div class="fb-form">' +
+        '<div class="fb-head"><span>Anna palautetta</span><button type="button" class="fb-x" aria-label="Sulje">✕</button></div>' +
+        '<div class="fb-ctx"></div>' +
+        '<label>Tyyppi</label>' +
+        '<select class="fb-cat">' +
+          '<option>Tekoälyn päättelemä tieto väärin ✨</option>' +
+          '<option>Reseptissä virhe</option>' +
+          '<option>Jotain puuttuu</option>' +
+          '<option>Ehdotus / parannus</option>' +
+          '<option>Muu</option>' +
+        '</select>' +
+        '<label style="margin-top:10px">Nimimerkki <span class="fb-opt">(vapaaehtoinen)</span></label>' +
+        '<input type="text" class="fb-nick" maxlength="40" placeholder="esim. Kalastaja-Kalle" autocomplete="nickname">' +
+        '<textarea class="fb-msg" placeholder="Kirjoita palautteesi…"></textarea>' +
+        '<button type="button" class="fb-send">Lähetä palaute</button>' +
+      '</div>' +
+      '<div class="fb-done" style="display:none">Kiitos palautteesta! ✓</div>';
+    document.body.appendChild(panel);
+
+    try { panel.querySelector('.fb-nick').value = localStorage.getItem(NICK_KEY) || ''; } catch (e) {}
+
+    fab.addEventListener('click', function () {
+      panel.classList.contains('open') ? closePanel() : openPanel(false);
+    });
+    panel.querySelector('.fb-x').addEventListener('click', closePanel);
+    panel.querySelector('.fb-send').addEventListener('click', sendFeedback);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
+  }
+
+  function openPanel(preselectAI) {
+    build();
+    panel.querySelector('.fb-ctx').innerHTML = ctxHtml();
+    if (preselectAI) panel.querySelector('.fb-cat').selectedIndex = 0;
+    panel.querySelector('.fb-form').style.display = '';
+    panel.querySelector('.fb-done').style.display = 'none';
+    panel.classList.add('open');
+    // Dialogin (reseptin) päällä: nosta paneeli dialogin sisään, jotta se on klikattavissa
+    var dlg = document.getElementById('dlg');
+    if (dlg && dlg.open && panel.parentElement !== dlg) dlg.appendChild(panel);
+    else if ((!dlg || !dlg.open) && panel.parentElement !== document.body) document.body.appendChild(panel);
+    setTimeout(function () { panel.querySelector('.fb-msg').focus(); }, 120);
+  }
+  function closePanel() { if (panel) panel.classList.remove('open'); }
+
+  function sendFeedback() {
+    var cat = panel.querySelector('.fb-cat').value;
+    var msg = panel.querySelector('.fb-msg').value.trim();
+    var nick = panel.querySelector('.fb-nick').value.trim().slice(0, 40);
+    if (!msg) { panel.querySelector('.fb-msg').focus(); return; }
+    try { nick ? localStorage.setItem(NICK_KEY, nick) : localStorage.removeItem(NICK_KEY); } catch (e) {}
+    var payload = {
+      category: cat,
+      message: msg.slice(0, 2000),
+      nick: nick || null,
+      view: tab,
+      section: activeFilters() || null,
+      title: (document.title || '').slice(0, 120),
+    };
+    if (ctx) for (var k in ctx) payload[k] = ctx[k];
+    try { if (window.mypa && window.mypa.send) window.mypa.send('feedback', payload); } catch (e) {}
+    panel.querySelector('.fb-msg').value = '';
+    panel.querySelector('.fb-form').style.display = 'none';
+    panel.querySelector('.fb-done').style.display = '';
+    setTimeout(closePanel, 1600);
+  }
+
+  /* ---- Kontekstikoukut: resepti, kulttuurialue, kalalaji, lähdeviite ---- */
+  document.addEventListener('DOMContentLoaded', function () {
+    build();
+    try {
+      if (typeof showDetail === 'function') {
+        var sd0 = showDetail;
+        showDetail = function (id) {
+          sd0(id);
+          var it = (D.items || []).find(function (i) { return i.id === id; });
+          if (it) fbSetCtx({ type: 'resepti', recipe_id: it.id, recipe_title: it.title, recipe_site: it.site });
+        };
+      }
+      var dlg = document.getElementById('dlg');
+      if (dlg) dlg.addEventListener('close', function () {
+        fbClearCtx();
+        if (panel && panel.parentElement === dlg) { document.body.appendChild(panel); closePanel(); }
+      });
+      if (window.cultShow) {
+        var cs0 = window.cultShow;
+        window.cultShow = function (key) {
+          cs0(key);
+          var rg = ((D.cultures || {}).regions || []).find(function (r) { return r.key === key; });
+          if (rg) fbSetCtx({ type: 'kulttuuri', key: key, name: rg.name });
+        };
+      }
+      if (window.speciesShow) {
+        var sp0 = window.speciesShow;
+        window.speciesShow = function (slug) {
+          sp0(slug);
+          var s = (D.species || []).find(function (x) { return x.slug === slug; });
+          if (s) fbSetCtx({ type: 'laji', key: slug, name: s.name_fi });
+        };
+      }
+      if (window.citShow) {
+        var ci0 = window.citShow;
+        window.citShow = function (id) {
+          ci0(id);
+          var s = (typeof SOURCES !== 'undefined') ? SOURCES[id] : null;
+          if (s && s.kind === 'viite') fbSetCtx({ type: 'lahde', key: id, name: s.label });
+        };
+      }
+      if (window.popClose) {
+        var pc0 = window.popClose;
+        window.popClose = function () { pc0(); fbClearCtx(); };
       }
     } catch (e) {}
   });
