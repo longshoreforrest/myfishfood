@@ -514,8 +514,16 @@ footer a.how-link:hover { opacity: 1; }
   .aitoggle-sm { border: 1px solid var(--line); background: var(--card); color: var(--muted); font: 600 12.5px system-ui; padding: 7px 13px; border-radius: 999px; cursor: pointer; }
   .aitoggle-sm.on { border-color: #e0b53c; background: #fdf6e3; color: #8a6d1a; }
 
-  /* Tiivis (teksti) -lista */
-  .reclist-compact { display: flex; flex-direction: column; gap: 6px; }
+  /* Reseptimäärä listan edessä + siirretyt tunnusluvut jakaumapaneelissa */
+  .reccount { font-size: 15px; color: var(--muted); margin: 6px 0 12px; }
+  .reccount b { font-size: 23px; color: var(--teal); font-weight: 800; }
+  .reccount span { font-size: 13px; }
+  .recmeta { display: flex; flex-wrap: wrap; gap: 26px; padding: 13px 18px; margin: 4px 0 8px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  .recmeta > div { font-size: 12px; color: var(--muted); }
+  .recmeta > div span { display: block; font-size: 20px; font-weight: 800; color: var(--ink); }
+
+  /* Tiivis (teksti) -lista: monta per rivi (tiivis grid) */
+  .reclist-compact { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
   .card-c { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; cursor: pointer; transition: border-color .14s, background .14s; }
   .card-c:hover { border-color: var(--teal); background: linear-gradient(135deg, rgba(14,124,134,.05), transparent); }
   .card-c .cc-main { flex: 1; min-width: 0; }
@@ -653,6 +661,45 @@ li.sc-hi { background: color-mix(in srgb, var(--teal) 8%, transparent); border-r
   .pv-merge::after { background: linear-gradient(90deg, color-mix(in srgb, var(--teal-dark) 55%, transparent), transparent); }
   .pv-conv { grid-column: 1 / -1; background: color-mix(in srgb, var(--teal) 10%, var(--card)); border: 1px solid color-mix(in srgb, var(--teal) 28%, var(--line)); border-radius: 11px; padding: 11px 13px; display: flex; flex-direction: column; gap: 5px; }
   .pv-conv .l, .pv-conv .ic { color: var(--teal-dark); }
+  /* Sisäinen Kehitysanalytiikka-välilehti */
+  .an-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+  .an-range { flex-shrink: 0; }
+  .an-range button { font: 600 13px system-ui; padding: 6px 14px; border: 1px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; cursor: pointer; }
+  .an-range button.on { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .an-filterbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .an-flabel { font-size: 11.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-left: 8px; }
+  .an-filterbar > .an-flabel:first-child { margin-left: 0; }
+  .an-modeltbl tr { cursor: pointer; }
+  .an-modeltbl tr.an-msel td { background: rgba(14,124,134,.12); }
+  .an-modeltbl tr:not(:first-child):hover td { background: var(--chip); }
+  .an-hint { font-size: 11.5px; color: var(--muted); padding-top: 8px; }
+
+  .an-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .an-kpi { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; box-shadow: 0 1px 3px rgba(6,34,44,.06); }
+  .an-kpi-v { font-size: 26px; font-weight: 800; color: var(--teal); letter-spacing: -.02em; line-height: 1.1; }
+  .an-kpi-l { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .an-kpi-sub { font-size: 11.5px; color: var(--muted); opacity: .8; margin-top: 2px; }
+
+  .an-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; margin-bottom: 14px; }
+  .an-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; box-shadow: 0 1px 3px rgba(6,34,44,.06); }
+  .an-card h3 { margin: 0 0 12px; font-size: 14px; color: var(--teal-dark); }
+
+  .an-bars { display: flex; flex-direction: column; gap: 6px; }
+  .an-brow { display: flex; align-items: center; gap: 10px; font-size: 12.5px; }
+  .an-blabel { flex: 0 0 34%; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .an-btrack { flex: 1; height: 9px; background: var(--chip); border-radius: 999px; overflow: hidden; }
+  .an-btrack span { display: block; height: 100%; background: linear-gradient(90deg, var(--teal), #2ec2b0); border-radius: 999px; }
+  .an-bval { flex: 0 0 auto; min-width: 48px; text-align: right; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .an-tblwrap { overflow-x: auto; }
+  .an-tbl { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  .an-tbl th { text-align: left; color: var(--muted); font-weight: 700; border-bottom: 2px solid var(--line); padding: 6px 10px; }
+  .an-tbl td { border-bottom: 1px solid var(--line); padding: 6px 10px; vertical-align: top; }
+  .an-tbl tr:hover td { background: var(--chip); }
+  .an-nowrap { white-space: nowrap; }
+  .an-prompt { max-width: 340px; color: var(--ink); }
+  .an-empty { background: var(--card); border: 1px dashed var(--line); border-radius: 14px; padding: 24px; color: var(--muted); }
+  .an-empty code { background: var(--chip); padding: 1px 6px; border-radius: 5px; }
   /* ===================== MOBIILI / RESPONSIIVISUUS ===================== */
   /* Työpöytä: hampurilainen piilossa, navwrap läpinäkyvä (nav & nav2 normaalisti). */
   .nav-burger { display: none; }
@@ -814,6 +861,7 @@ const TABS = [
 ];
 // Sisäiset välilehdet omalla rivillään (avataan lukkonapista; ei näy julkaistussa)
 const INTERNAL_TABS = [
+  ['tracet', 'Analytiikka'],
   ['tietokanta', 'Tietokanta'],
   ['tietomalli', 'Tietomalli'],
   ['tyonkulut', 'Työnkulut'],
@@ -1292,11 +1340,19 @@ window.onSearchInput = v => {
   q = v;
   const set = (id, html) => { const e = document.getElementById(id); if (e) e.innerHTML = html; };
   set('breadcrumbSlot', chipRow());
-  set('statSlot', renderStats());
   set('recipeBody', renderBody());
 };
 
-const QUICK_METHODS = ['pannu', 'uuni', 'keitto', 'grilli', 'savustus', 'graavi'];
+// Pikavalinnat: valmistustapoja + suosituimpia lajeja (yksi klikkaus rajaa).
+const QUICK_PICKS = [
+  { t: 'method', k: 'pannu', label: 'Pannu' },
+  { t: 'method', k: 'uuni', label: 'Uuni' },
+  { t: 'method', k: 'keitto', label: 'Keitto' },
+  { t: 'species', k: 'lohi', label: 'Lohi' },
+  { t: 'species', k: 'kuha', label: 'Kuha' },
+  { t: 'species', k: 'ahven', label: 'Ahven' },
+  { t: 'species', k: 'hauki', label: 'Hauki' },
+];
 
 function renderBody() {
   const cur = filtered(null);
@@ -1360,10 +1416,18 @@ function renderBody() {
       rows: dist(filtered('site'), it => it.site).slice(0, 12)
         .map(r => ({ ...r, selected: F.site === r.key })),
       onclickName: 'drillSite' }));
-    panel = `<div class="chartwrap">${charts.join('')}</div>`;
+    const medAI = aiOn && cur.some(r => { const e = effMinutes(r); return e.v != null && e.o !== 'suora'; });
+    const meta = `<div class="recmeta">
+      <div><span>${new Set(cur.map(r => r.site)).size}</span>lähdesivustoa</div>
+      <div><span>${new Set(cur.flatMap(r => r.norm)).size}</span>eri ainesosaa</div>
+      <div><span>${med != null ? med + ' min' : '–'}${medAI ? ' ✨' : ''}</span>mediaanikesto</div></div>`;
+    panel = `<div class="chartwrap">${charts.join('')}</div>${meta}`;
   }
+  const total = allRecipes().length;
+  const filt = activeFilterCount() + (q ? 1 : 0);
+  const count = `<div class="reccount"><b>${cur.length}</b> reseptiä${cur.length < total ? ` <span>/ ${total}</span>` : ''}${filt ? ' hakuehdoillasi' : ''}</div>`;
   const cls = cardView === 'tiivis' ? 'reclist reclist-compact' : 'grid';
-  return `${panel}<div class="${cls}">${cur.map(card).join('')}</div>`;
+  return `${panel}${count}<div class="${cls}">${cur.map(card).join('')}</div>`;
 }
 
 function renderStats() {
@@ -1380,8 +1444,10 @@ function renderStats() {
 }
 
 function renderReseptit(el) {
-  const pills = QUICK_METHODS.map(m =>
-    `<button class="${F.method === m ? 'on' : ''}" onclick="drillMethod('${m}')">${m}</button>`).join('');
+  const pills = QUICK_PICKS.map(p => {
+    const on = p.t === 'method' ? F.method === p.k : F.species === p.k;
+    return `<button class="${on ? 'on' : ''}" onclick="${p.t === 'method' ? 'drillMethod' : 'drillSpecies'}('${p.k}')">${p.label}</button>`;
+  }).join('');
   el.innerHTML = `
     <div class="rtoolbar">
       <div class="grow"><input type="search" id="recipeSearch" style="width:100%"
@@ -1398,7 +1464,6 @@ function renderReseptit(el) {
         `<button class="exchip ${F.exGroups.includes(g) ? 'on' : ''}" onclick="drillExclude('${g}')">${esc(gr.label)}</button>`).join('')}</div>` : ''}
     </div>
     <div id="breadcrumbSlot">${chipRow()}</div>
-    <div id="statSlot">${renderStats()}</div>
     <div id="decisionsSlot">${renderDecisions()}</div>
     <button class="pt-bar ${chartsOpen ? 'open' : ''}" onclick="toggleCharts()" aria-expanded="${chartsOpen}">
       <span class="pt-ico">📊</span>
@@ -3109,6 +3174,131 @@ function renderTietomalli(el) {
         <tr><td>web/dbdump.js</td><td>Sisäinen täysi kantadumppi Tietokanta-välilehdelle — kaikki taulut kaikkine sarakkeineen; gitignoroitu, ei julkaista.</td></tr>
       </table></div></div>`;
 }
+/* ===== Sisäinen: Agenttien kehitysanalytiikka (audit trail -traceista) =====
+   Vrt. agentic-articles/phd-tapio Analytics: promptit, työaika, tokenit,
+   työkalukutsut, tiedostot — aikaväli-suodattimella. Data: window.MYFOOD_TRACES
+   (tools/gen_analytics.py → web/traces.js). Ei näy julkaistussa versiossa. */
+let anRange = 'all';
+let anModel = 'all';   // 'all' | mallin id (päämalli)
+window.anSetRange = r => { anRange = r; render(); scrollTo(0, 0); };
+window.anSetModel = m => { anModel = m; render(); scrollTo(0, 0); };
+
+const MODEL_NAMES = { 'claude-opus-4-8': 'Opus 4.8', 'claude-fable-5': 'Fable 5',
+  'claude-sonnet-5': 'Sonnet 5', 'claude-haiku-4-5-20251001': 'Haiku 4.5', 'tuntematon': 'Tuntematon' };
+const modelLabel = m => MODEL_NAMES[m] || (m || '').replace(/^claude-/, '').replace(/-\d{8}$/, '');
+// Vuoron päämalli = eniten viestejä tuottanut malli (tokenit ovat vuorotason summa).
+const primaryModel = t => { const e = Object.entries(t.models || {}); return e.length ? e.sort((a, b) => b[1] - a[1])[0][0] : 'tuntematon'; };
+
+const anFmtN = n => (n || 0).toLocaleString('fi-FI');
+const anFmtTok = n => { n = n || 0; return n >= 1e6 ? (n / 1e6).toFixed(1) + ' M' : n >= 1e3 ? (n / 1e3).toFixed(1) + ' k' : String(n); };
+const anFmtDur = s => { s = Math.round(s || 0); const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60); return h ? `${h} h ${m} min` : m ? `${m} min` : `${s} s`; };
+const anDay = ts => (ts || '').slice(0, 10);
+
+// vain aikaväli-suodatin (mallivertailu näyttää kaikki mallit tässä ikkunassa)
+function anRangeSet() {
+  const all = window.MYFOOD_TRACES || [];
+  if (!all.length || anRange === 'all') return all;
+  const maxTs = all.reduce((a, t) => t.ts > a ? t.ts : a, '');
+  const cutoff = new Date(new Date(maxTs).getTime() - (anRange === '1d' ? 1 : 7) * 864e5).toISOString();
+  return all.filter(t => t.ts >= cutoff);
+}
+// aikaväli + mallisuodatin
+function anFiltered() {
+  const s = anRangeSet();
+  return anModel === 'all' ? s : s.filter(t => primaryModel(t) === anModel);
+}
+
+// Per-malli-vertailu aikavälillä (vuoro kohdennettu päämalliinsa → tokenit/aika likimääräisiä).
+function anModelCompare() {
+  const S = anRangeSet();
+  const rows = [...new Set(S.map(primaryModel))].map(m => {
+    const ts = S.filter(t => primaryModel(t) === m);
+    return { m, turns: ts.length,
+      out: ts.reduce((a, t) => a + ((t.tokens || {}).output || 0), 0),
+      dur: ts.reduce((a, t) => a + (t.duration_s || 0), 0) };
+  }).sort((a, b) => b.out - a.out);
+  return `<table class="an-tbl an-modeltbl">
+    <tr><th>Malli</th><th>Vuoroja</th><th>Out-tok.</th><th>Työaika</th></tr>
+    ${rows.map(r => `<tr class="${anModel === r.m ? 'an-msel' : ''}" onclick="anSetModel('${anModel === r.m ? 'all' : r.m}')">
+      <td><b>${esc(modelLabel(r.m))}</b></td><td class="an-nowrap">${anFmtN(r.turns)}</td>
+      <td class="an-nowrap">${anFmtTok(r.out)}</td><td class="an-nowrap">${anFmtDur(r.dur)}</td></tr>`).join('')}
+  </table><div class="an-hint">Klikkaa mallia suodattaaksesi koko näkymän sillä. Tokenit/aika kohdennettu vuoron päämalliin.</div>`;
+}
+
+function anBars(rows, fmt) {
+  const max = Math.max(1, ...rows.map(r => r.v));
+  return `<div class="an-bars">${rows.map(r => `<div class="an-brow">
+    <span class="an-blabel" title="${esc(r.label)}">${esc(r.label)}</span>
+    <span class="an-btrack"><span style="width:${Math.max(2, Math.round(r.v / max * 100))}%"></span></span>
+    <span class="an-bval">${fmt ? fmt(r.v) : anFmtN(r.v)}</span></div>`).join('')}</div>`;
+}
+
+function renderAnalytiikka(el) {
+  const ALL = window.MYFOOD_TRACES || [];
+  if (!ALL.length) {
+    el.innerHTML = `<div class="an-empty">Ei trace-dataa. Aja <code>python3 tools/gen_analytics.py</code> ja rakenna sivu (<code>tools/build_web.py</code>) uudelleen.</div>`;
+    return;
+  }
+  const T = anFiltered();
+  const sum = f => T.reduce((a, t) => a + (f(t) || 0), 0);
+  const tok = k => sum(t => (t.tokens || {})[k]);
+  const toolCalls = sum(t => Object.values(t.tools || {}).reduce((a, b) => a + b, 0));
+  const files = new Set(); T.forEach(t => (t.files_modified || []).forEach(f => files.add(f)));
+  const sessions = new Set(T.map(t => t.session)).size;
+  const days = [...new Set(T.map(t => anDay(t.ts)))].sort();
+  const byDay = k => days.map(d => ({ label: d.slice(5), v: T.filter(t => anDay(t.ts) === d).reduce((a, t) => a + k(t), 0) }));
+
+  const agg = (pick) => { const m = {}; T.forEach(t => Object.entries(pick(t) || {}).forEach(([k, v]) => m[k] = (m[k] || 0) + v)); return m; };
+  const toolRows = Object.entries(agg(t => t.tools)).sort((a, b) => b[1] - a[1]).map(([k, v]) => ({ label: k, v }));
+  const modelRows = Object.entries(agg(t => t.models)).sort((a, b) => b[1] - a[1]).map(([k, v]) => ({ label: k, v }));
+  const fileM = {}; T.forEach(t => (t.files_modified || []).forEach(f => fileM[f] = (fileM[f] || 0) + 1));
+  const fileRows = Object.entries(fileM).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([k, v]) => ({ label: k.replace(/^MyFood\//, ''), v }));
+
+  const kpi = (v, l, sub) => `<div class="an-kpi"><div class="an-kpi-v">${v}</div><div class="an-kpi-l">${l}</div>${sub ? `<div class="an-kpi-sub">${sub}</div>` : ''}</div>`;
+  const card = (title, body) => `<div class="an-card"><h3>${esc(title)}</h3>${body}</div>`;
+
+  el.innerHTML = `
+    <div class="an-head">
+      <div><h2 style="margin:0">🤖 Kehitysanalytiikka <span class="int-tag">sisäinen</span></h2>
+        <p class="meta" style="margin:4px 0 0">Agenttien vuorokohtainen mittausdata (${anFmtN(ALL.length)} vuoroa · ${new Set(ALL.map(t => t.session)).size} sessiota)${anModel !== 'all' ? ` · suodatettu malliin <b>${esc(modelLabel(anModel))}</b>` : ''}. Kootaan <code>tools/gen_analytics.py</code>:llä.</p></div>
+    </div>
+    <div class="an-filterbar">
+      <span class="an-flabel">Aikaväli</span>
+      <div class="an-range chips">${[['all', 'Kaikki'], ['7d', '7 pv'], ['1d', '24 h']].map(([r, l]) =>
+        `<button class="${anRange === r ? 'on' : ''}" onclick="anSetRange('${r}')">${l}</button>`).join('')}</div>
+      <span class="an-flabel">Malli</span>
+      <div class="an-range chips">
+        <button class="${anModel === 'all' ? 'on' : ''}" onclick="anSetModel('all')">Kaikki</button>
+        ${[...new Set(ALL.map(primaryModel))].sort((a, b) => ALL.filter(t => primaryModel(t) === b).length - ALL.filter(t => primaryModel(t) === a).length)
+          .map(m => `<button class="${anModel === m ? 'on' : ''}" onclick="anSetModel('${m}')">${esc(modelLabel(m))}</button>`).join('')}
+      </div>
+    </div>
+    <div class="an-kpis">
+      ${kpi(anFmtN(T.length), 'vuoroa (promptia)')}
+      ${kpi(anFmtDur(sum(t => t.duration_s)), 'agenttityöaikaa')}
+      ${kpi(anFmtTok(tok('output')), 'output-tokenia', `+ ${anFmtTok(tok('cache_read'))} cache-luku`)}
+      ${kpi(anFmtN(toolCalls), 'työkalukutsua')}
+      ${kpi(anFmtN(files.size), 'muokattua tiedostoa')}
+      ${kpi(anFmtN(sessions), 'agenttisessiota')}
+    </div>
+    <div class="an-grid">
+      ${card('Output-tokenit / päivä', anBars(byDay(t => (t.tokens || {}).output || 0), anFmtTok))}
+      ${card('Agenttityöaika / päivä', anBars(byDay(t => t.duration_s || 0), anFmtDur))}
+      ${card('Vuorot / päivä', anBars(byDay(() => 1)))}
+      ${card('Työkalukutsut', anBars(toolRows))}
+      ${card('Mallien vertailu (aikavälillä)', anModelCompare())}
+      ${card('Eniten muokatut tiedostot', anBars(fileRows))}
+    </div>
+    ${card('Viimeisimmät vuorot', `<div class="an-tblwrap"><table class="an-tbl">
+      <tr><th>Aika</th><th>Prompti</th><th>Kesto</th><th>Out-tok.</th><th>Työkalut</th></tr>
+      ${[...T].reverse().slice(0, 25).map(t => `<tr>
+        <td class="an-nowrap">${esc((t.ts || '').slice(5, 16).replace('T', ' '))}</td>
+        <td class="an-prompt" title="${esc(t.prompt || '')}">${esc((t.prompt || '').slice(0, 80))}${(t.prompt || '').length > 80 ? '…' : ''}</td>
+        <td class="an-nowrap">${anFmtDur(t.duration_s)}</td>
+        <td class="an-nowrap">${anFmtTok((t.tokens || {}).output)}</td>
+        <td>${esc(Object.entries(t.tools || {}).map(([k, v]) => k + '×' + v).join(', '))}</td></tr>`).join('')}
+    </table></div>`)}`;
+}
 /* ===================== SIVUSTOHAKU (Fondia-tyyli) =====================
    Headerin hakukenttä (Ctrl/Cmd+K) + laajuusvalitsin:
    - Koko sivusto (oletus): dataindeksi kaikesta sisällöstä → tulospaneeli
@@ -3836,7 +4026,8 @@ function render() {
     kulttuurit: renderKulttuurit,
     lahteet: renderLahteet, ohjeet: renderOhjeet, tyonkulut: renderTyonkulut,
     ajatus: renderAjatus, kehitys: renderKehitys,
-    tietokanta: renderTietokanta, tietomalli: renderTietomalli})[tab](el);
+    tietokanta: renderTietokanta, tietomalli: renderTietomalli,
+    tracet: renderAnalytiikka})[tab](el);
   if (tab === 'miksikala' || tab === 'analyysi' || tab === 'kulttuurit') glossLinkify(el);  // lyhenteet klikattaviksi tekstissä
 }
 const dlg = document.getElementById('dlg');
