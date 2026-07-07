@@ -1507,7 +1507,7 @@ document.addEventListener('pointermove', e => {
    Rakentaa samaa F-suodatintilaa kuin jakaumat, mutta askel kerrallaan:
    valitse dimensio → näe vaihtoehdot jakaumapalkkeina → valitse → seuraava.
    Käyttää 20-recipes.js:n koneistoa (filtered/dist/effX/setF/EX_GROUPS…). */
-let decisionsOpen = localStorage.getItem('myfood_decisionsOpen') === '1';
+let decisionsOpen = false;  // aina kiinni sivun latautuessa (avataan vasta klikkaamalla)
 let dcStep = null;  // avoinna oleva dimensio (null = "valitse seuraava" -näkymä)
 
 const DC_DIMS = [
@@ -1532,7 +1532,7 @@ function dcBaseNoEx() {  // reseptit ilman poissulkuja (jotta näkee montako kuk
   const r = filtered(); F.exGroups = save; return r;
 }
 function dcRefresh() { const el = document.getElementById('decisionsSlot'); if (el) el.innerHTML = renderDecisions(); }
-window.dcToggle = () => { decisionsOpen = !decisionsOpen; localStorage.setItem('myfood_decisionsOpen', decisionsOpen ? '1' : '0'); dcRefresh(); };
+window.dcToggle = () => { decisionsOpen = !decisionsOpen; dcRefresh(); };
 window.dcOpen = dim => { dcStep = dim; decisionsOpen = true; dcRefresh(); };
 window.dcChoose = (dim, val) => { dcStep = null; if (dim === 'time') setF('time', Number(val)); else setF(dim, val); };
 window.dcUndo = dim => { if (dim === 'time') setF('time', F.time); else setF(dim, F[dim]); };
