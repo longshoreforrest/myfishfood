@@ -514,7 +514,9 @@ footer a.how-link:hover { opacity: 1; }
   .aitoggle-sm { border: 1px solid var(--line); background: var(--card); color: var(--muted); font: 600 12.5px system-ui; padding: 7px 13px; border-radius: 999px; cursor: pointer; }
   .aitoggle-sm.on { border-color: #e0b53c; background: #fdf6e3; color: #8a6d1a; }
 
-  /* Reseptimäärä listan edessä + siirretyt tunnusluvut jakaumapaneelissa */
+  /* Reseptimäärä + näkymävalitsin samalla rivillä, heti ennen listaa */
+  .reccount-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 8px 0 12px; }
+  .reccount-row .reccount, .reccount-row .listctrls { margin: 0; }
   .reccount { font-size: 15px; color: var(--muted); margin: 6px 0 12px; }
   .reccount b { font-size: 23px; color: var(--teal); font-weight: 800; }
   .reccount span { font-size: 13px; }
@@ -1425,9 +1427,20 @@ function renderBody() {
   }
   const total = allRecipes().length;
   const filt = activeFilterCount() + (q ? 1 : 0);
-  const count = `<div class="reccount"><b>${cur.length}</b> reseptiä${cur.length < total ? ` <span>/ ${total}</span>` : ''}${filt ? ' hakuehdoillasi' : ''}</div>`;
+  // Tuloslaskuri + näkymävalitsin samalla rivillä, aina heti ennen listaa.
+  const controls = `<div class="reccount-row">
+    <div class="reccount"><b>${cur.length}</b> reseptiä${cur.length < total ? ` <span>/ ${total}</span>` : ''}${filt ? ' hakuehdoillasi' : ''}</div>
+    <div class="listctrls">
+      <div class="viewtoggle" role="group" aria-label="Näkymä">
+        <button class="${cardView === 'kuvat' ? 'on' : ''}" data-v="kuvat" onclick="setCardView('kuvat')">🖼️ Kuvat</button>
+        <button class="${cardView === 'tiivis' ? 'on' : ''}" data-v="tiivis" onclick="setCardView('tiivis')">☰ Tiivis</button>
+      </div>
+      <button class="aitoggle-sm ${aiOn ? 'on' : ''}" onclick="toggleAI()"
+        title="AI täydentää puuttuvia valmistustapoja/kestoja (✨-merkityt). Suoraa dataa ei korvata.">✨ AI ${aiOn ? 'käytössä' : 'pois'}</button>
+    </div>
+  </div>`;
   const cls = cardView === 'tiivis' ? 'reclist reclist-compact' : 'grid';
-  return `${panel}${count}<div class="${cls}">${cur.map(card).join('')}</div>`;
+  return `${panel}${controls}<div class="${cls}">${cur.map(card).join('')}</div>`;
 }
 
 function renderStats() {
@@ -1473,14 +1486,6 @@ function renderReseptit(el) {
           : 'Avaa ja rajaa reseptejä lajin, valmistustavan, aineksen, keston tai lähteen mukaan'}</span></span>
       <span class="pt-chev">${chartsOpen ? 'Piilota ▲' : 'Avaa ▼'}</span>
     </button>
-    <div class="listctrls">
-      <div class="viewtoggle" role="group" aria-label="Näkymä">
-        <button class="${cardView === 'kuvat' ? 'on' : ''}" data-v="kuvat" onclick="setCardView('kuvat')">🖼️ Kuvat</button>
-        <button class="${cardView === 'tiivis' ? 'on' : ''}" data-v="tiivis" onclick="setCardView('tiivis')">☰ Tiivis</button>
-      </div>
-      <button class="aitoggle-sm ${aiOn ? 'on' : ''}" onclick="toggleAI()"
-        title="AI täydentää puuttuvia valmistustapoja/kestoja (✨-merkityt). Suoraa dataa ei korvata.">✨ AI ${aiOn ? 'käytössä' : 'pois'}</button>
-    </div>
     <div id="recipeBody">${renderBody()}</div>`;
   const inp = document.getElementById('recipeSearch');
   if (inp && q && document.activeElement !== inp) { inp.focus(); inp.setSelectionRange(q.length, q.length); }
@@ -2175,6 +2180,8 @@ const ROADMAP = [
   { status: 'kehitteilla', t: 'Ruokavaliopresetit', d: 'Yhden klikkauksen valmiit profiilit (maidoton, gluteeniton, keto) jotka asettavat poissulut kerralla.' },
   { status: 'ideoitu', t: 'Käyttäjäprofiili & allergiamuisti', d: 'Tallenna omat allergiat/inhokit kerran; sovellus soveltaa ne automaattisesti (localStorage tai kirjautuminen).' },
   { status: 'ideoitu', t: 'Ravintoarvot per resepti', d: 'Kytke Finelin koostumusdata vakioituihin aineksiin → energia, proteiini, D-vitamiini, omega-3 annosta kohti.' },
+  { status: 'ideoitu', t: 'Analyysi kalojen kastikkeista', d: 'Synteesianalyysi (Oivallukset-tyyliin) erilaisista kastikkeista joita tarjotaan kalojen kanssa: voi- ja sitruunakastikkeet, hollandaise, remoulade, tilli-, sinappi- ja tartar-kastikkeet, kermaiset ja aasialaiset liemet — koulukunnat, perusosat, kikat ja mikä sopii mihinkin kalaan/valmistustapaan.' },
+  { status: 'ideoitu', t: 'Analyysi kalan lisukkeista', d: 'Synteesianalyysi siitä mitä paistetun kalan ja uunikalan kanssa tarjotaan: perunat (uunis-/muusi-/keitetyt), juurekset, salaatit, kastikkeet, sitruuna, ruisleipä ym. — mikä on klassinen pari millekin valmistustavalle ja kalalle, ja miten lisuke rakennetaan.' },
   { status: 'ideoitu', t: 'Aineskorvaukset (substituutiot)', d: 'Ehdota korvaavia aineksia (esim. kerma → kaurakerma) poissuljetulle ainekselle, ei pelkkä piilotus.' },
   { status: 'ideoitu', t: 'Annoskoon skaalaus', d: 'Säädä annosmäärää → ainesmäärät skaalautuvat.' },
   { status: 'ideoitu', t: 'Ostoslista', d: 'Kerää valittujen reseptien ainekset yhteen listaan (yhdistä samat, ryhmittele kaupan osastoihin).' },
@@ -3531,6 +3538,37 @@ window.__MYPA_ENDPOINT__ = 'https://mypa.longshoreforrest.workers.dev/collect';
     }
   }
 
+  // Korkean entropian UA Client Hints (tarkka laitemalli). Vain Chromium.
+  var UACH = null;
+  function resolveHighEntropy(cb) {
+    try {
+      var uad = navigator.userAgentData;
+      if (uad && typeof uad.getHighEntropyValues === "function") {
+        uad
+          .getHighEntropyValues([
+            "model",
+            "platformVersion",
+            "architecture",
+            "bitness",
+            "uaFullVersion",
+          ])
+          .then(function (he) {
+            UACH = {
+              model: he.model || null,
+              platform_version: he.platformVersion || null,
+              arch: he.architecture || null,
+              bitness: he.bitness || null,
+              full_version: he.uaFullVersion || null,
+            };
+          })
+          .catch(function () {})
+          .then(function () { cb(); });
+        return;
+      }
+    } catch (e) {}
+    cb();
+  }
+
   function clientContext() {
     var ctx = {};
     try {
@@ -3580,6 +3618,7 @@ window.__MYPA_ENDPOINT__ = 'https://mypa.longshoreforrest.workers.dev/collect';
         referrer: document.referrer || "",
         utm: utm(),
         extra: Object.keys(enriched).length ? enriched : null,
+        ch: UACH || undefined,
         self: SELF || undefined,
         user: id ? { email: id.email, name: id.name, sub: id.sub } : undefined,
         idToken: id && id.idToken ? id.idToken : undefined,
@@ -3604,12 +3643,15 @@ window.__MYPA_ENDPOINT__ = 'https://mypa.longshoreforrest.workers.dev/collect';
     } catch (e) {}
   }
 
+  function autoSend() {
+    // Odota korkean entropian client hintit ennen ensimmäistä lähetystä.
+    resolveHighEntropy(function () { send(AUTO_EVENT); });
+  }
+
   if (document.readyState === "complete" || document.readyState === "interactive") {
-    send(AUTO_EVENT);
+    autoSend();
   } else {
-    document.addEventListener("DOMContentLoaded", function () {
-      send(AUTO_EVENT);
-    });
+    document.addEventListener("DOMContentLoaded", autoSend);
   }
 
   window.mypa = { send: send, __initialized: true, __self: SELF };
