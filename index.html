@@ -451,6 +451,11 @@ footer a.how-link:hover { opacity: 1; }
   .anlx-fig:hover img { transform: scale(1.04); }
   .anlx-fig figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 16px 10px; background: linear-gradient(transparent, rgba(4,24,31,.82)); color: #fff; font-size: 12px; }
   @media (max-width: 640px) { .anlx-fig img { height: 190px; } .anlx-hero-in { padding: 20px; } }
+  /* Reseptilinkit analyysitekstissä ([teksti](resepti:ID) / (suodata:qs)) */
+  .prose a.rlink { color: var(--teal-dark, #0e4c56); font-weight: 600; text-decoration: none;
+    border-bottom: 1.5px solid color-mix(in srgb, var(--teal) 45%, transparent); cursor: pointer; }
+  .prose a.rlink:hover { color: var(--teal); border-bottom-color: var(--teal); }
+  .prose a.rlink::before { content: "🔗 "; font-size: .85em; opacity: .7; }
   /* "Päätöksesi" — ohjattu decision chain */
   .dc-bar { margin-bottom: 0; }
   .dc-body { border: 1px solid rgba(14,124,134,.28); border-top: none; border-radius: 0 0 14px 14px;
@@ -1747,6 +1752,12 @@ function mdToHtml(md, refPrefix = 'wf') {
     }).join('<span class="ref-sep">,</span>');
     return links ? `<sup class="ref">${links}</sup>` : m;
   });
+  // Reseptilinkit analyysitekstissä: [teksti](resepti:ID) avaa reseptin,
+  // [teksti](suodata:qs) avaa suodatetun Reseptit-listan (esim. suodata:tapa=keitto).
+  h = h.replace(/\[([^\]]+)\]\(resepti:([a-z0-9]+)\)/gi, (m, label, id) =>
+    `<a class="rlink" onclick="showDetail('${id}');return false;">${label}</a>`);
+  h = h.replace(/\[([^\]]+)\]\(suodata:([^)]+)\)/gi, (m, label, qs) =>
+    `<a class="rlink" onclick="applyRecipeFilter('${qs.replace(/'/g, "\\'")}');return false;">${label}</a>`);
   h = h.replace(/(?:<uli>.*?<\/uli>\n?)+/gs, b => '<ul>' + b.replace(/<\/?uli>/g, m => m.includes('/') ? '</li>' : '<li>') + '</ul>');
   h = h.replace(/(?:<oli[^>]*>.*?<\/oli>\n?)+/gs, b => '<ol>' + b.replace(/<oli data-n="(\d+)">/g, '<li data-n="$1">').replace(/<\/oli>/g, '</li>') + '</ol>');
   return h.split(/\n{2,}/).map(p => /^<(h\d|ul|ol|table)/.test(p.trim()) ? p : `<p>${p}</p>`).join('\n');
