@@ -106,7 +106,7 @@
   article.prose { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 34px 40px; max-width: 860px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(6,34,44,.06); }
   article.prose.wide { max-width: none; }
   article.prose h1 { font-size: 26px; letter-spacing: -.02em; } article.prose h2 { color: var(--teal-dark); margin-top: 30px; }
-  article.prose h3 { color: var(--coral); }
+  article.prose h3 { color: var(--ocean-700); margin-top: 26px; font-size: 17px; }
   article.prose table { border-collapse: collapse; width: 100%; font-size: 14px; }
   article.prose th, article.prose td { border: 1px solid var(--line); padding: 6px 9px; text-align: left; }
   article.prose blockquote, .mission { background: var(--chip); border-left: 4px solid var(--accent); padding: 12px 18px; border-radius: 0 8px 8px 0; }
@@ -433,6 +433,7 @@ footer a.how-link:hover { opacity: 1; }
   .anlx-jump a { font-size: 12.5px; color: var(--teal); text-decoration: none; background: var(--chip); padding: 4px 10px; border-radius: 999px; }
   .anlx-jump a:hover { background: var(--teal); color: #fff; }
   .anlx-back { background: none; border: none; color: var(--teal); font-weight: 700; cursor: pointer; padding: 0 0 12px; font-size: 14px; }
+  .anlx-actionrow { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
 
   /* Prose-parannukset */
   .anlx-prose { max-width: 820px; }
@@ -984,7 +985,17 @@ popOverlay.className = 'pop-overlay'; popOverlay.id = 'popOverlay';
 popOverlay.innerHTML = '<div class="pop-card"><button class="pop-close" onclick="popClose()" aria-label="Sulje">✕</button><div id="popContent"></div></div>';
 popOverlay.addEventListener('click', e => { if (e.target === popOverlay) popClose(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') popClose(); });
-window.popClose = () => popOverlay.classList.remove('open');
+// Syvälinkitetty popup (laji/kulttuuri): avatessa osoiterivi päivitetään
+// jaettavaksi linkiksi ja suljettaessa palautetaan taustanäkymän hash.
+let popPrevHash = null;
+function popDeepLink(hash) {
+  if (!popOverlay.classList.contains('open') && popPrevHash == null) popPrevHash = location.hash || ('#' + tab);
+  try { history.replaceState(null, '', hash); } catch (e) {}
+}
+window.popClose = () => {
+  popOverlay.classList.remove('open');
+  if (popPrevHash != null) { try { history.replaceState(null, '', popPrevHash); } catch (e) {} popPrevHash = null; }
+};
 window.addEventListener('DOMContentLoaded', () => document.body.appendChild(popOverlay));
 
 window.citShow = id => {
@@ -1218,6 +1229,23 @@ function passes(it, skip) {
 
 const allRecipes = () => D.items.filter(i => i.type === 'recipe');
 const filtered = skip => allRecipes().filter(it => passes(it, skip));
+
+// Suodatintila osoiteriville jaettavaksi (#reseptit?laji=…&tapa=…) — sama
+// parametrinimistö kuin latauksen palautuksessa ja applyRecipeFilterissä.
+function fHash() {
+  const p = new URLSearchParams();
+  if (F.species) p.set('laji', F.species);
+  if (F.method) p.set('tapa', F.method);
+  if (F.ingCat) p.set('kategoria', F.ingCat);
+  if (F.ings.length) p.set('aines', F.ings.join(','));
+  if (F.time != null) p.set('kesto', F.time);
+  if (F.site) p.set('lahde', F.site);
+  if (F.side) p.set('lisuke', F.side);
+  if (F.exGroups.length) p.set('ilman', F.exGroups.join(','));
+  if (q) p.set('q', q);
+  const qs = p.toString();
+  try { history.replaceState(null, '', '#reseptit' + (qs ? '?' + qs : '')); } catch (e) {}
+}
 
 function setF(k, v) {
   if (k === 'ings') {
@@ -1462,6 +1490,7 @@ function renderStats() {
 }
 
 function renderReseptit(el) {
+  fHash();  // osoiterivi kuvaa aina näkyvää suodatustilaa → jaettavissa
   const pills = QUICK_PICKS.map(p => {
     const on = p.t === 'method' ? F.method === p.k : F.species === p.k;
     return `<button class="${on ? 'on' : ''}" onclick="${p.t === 'method' ? 'drillMethod' : 'drillSpecies'}('${p.k}')">${p.label}</button>`;
@@ -1472,6 +1501,7 @@ function renderReseptit(el) {
         placeholder="Hae resepteistä (esim. ruisjauho, ruskistettu voi, sitruuna)…"
         value="${esc(q)}" oninput="onSearchInput(this.value)"></div>
       <div class="chips">${pills}</div>
+      <button class="pv-copy" onclick="fHash();copyLink(location.hash, this)" title="Kopioi jaettava linkki tähän näkymään suodattimineen">🔗 Kopioi linkki</button>
     </div>
     <div class="exbar-wrap">
       <button class="exbar ${exOpen ? 'open' : ''}" onclick="toggleEx()" aria-expanded="${exOpen}">
@@ -1689,6 +1719,7 @@ function renderKasittely(el) {
     if (p.has('aihe')) kasittelyAihe = p.get('aihe') || null;
     if (p.has('q')) kasittelyQ = p.get('q') || '';
   }
+  kasHash();  // osoiterivi kuvaa aina näkyvää rajausta → jaettavissa
   // Lajichipit: vain lajit joilla on sisältöä (muut suodattimet huomioiden),
   // järjestys määrän mukaan — sama ontologia kuin Järvikalat-korteissa
   const lajiCounts = new Map();
@@ -1714,6 +1745,7 @@ function renderKasittely(el) {
         <button class="${kasittelyTyyppi === 'guide' ? 'on' : ''}" onclick="kasSetTyyppi('guide')">🔪 Ohjeet ${nG}</button>
         <button class="${kasittelyTyyppi === 'video' ? 'on' : ''}" onclick="kasSetTyyppi('video')">🎬 Videot ${nV}</button>
       </div>
+      <button class="pv-copy" onclick="kasHash();copyLink(location.hash, this)" title="Kopioi jaettava linkki tähän näkymään rajauksineen">🔗 Kopioi linkki</button>
     </div>
     <div class="exrow"><span class="exlabel">🐟 Laji:</span>${lajiChips || '<span class="meta">ei lajikohtaista sisältöä tällä rajauksella</span>'}</div>
     <div class="exrow"><span class="exlabel">📌 Aihe:</span>${aiheChips || '<span class="meta">ei aiheosumia</span>'}</div>
@@ -1726,9 +1758,14 @@ function renderKasittely(el) {
 }
 function mdToHtml(md, refPrefix = 'wf') {
   let h = esc(md);
+  // Kovarivitetty lähde-md: sisennetty rivi on edellisen (lista)rivin jatkoa —
+  // liitetään yhteen, ettei listakohta katkea ja jatkoteksti putoa listan ulkopuolelle.
+  h = h.replace(/\n[ \t]+(?=\S)/g, ' ');
   h = h.replace(/\[\[([\d,\s]+)\]\]/g, (mm, nums) => '<sup class="cref-sup">[' + nums.split(',').map(x => x.trim()).filter(Boolean).map(n => '<a class="cref" onclick="citShow(\'' + refPrefix + '-' + n + '\')">' + n + '</a>').join(',') + ']</sup>');
   // taulukot
-  h = h.replace(/((?:^\|.*\|\s*$\n?)+)/gm, block => {
+  // [ \t]*$ eikä \s*$ — \s nielaisisi taulukon jälkeisen tyhjän rivin,
+  // jolloin seuraava otsikko liimautuu </table>-tagiin eikä renderöidy.
+  h = h.replace(/((?:^\|.*\|[ \t]*$\n?)+)/gm, block => {
     const rows = block.trim().split('\n').map(r => r.replace(/^\||\|$/g, '').split('|').map(c => c.trim()));
     if (rows.length < 2) return block;
     const body = rows.filter(r => !r.every(c => /^-+$/.test(c)));
@@ -1742,7 +1779,7 @@ function mdToHtml(md, refPrefix = 'wf') {
        .replace(/^(\d+)\. (.*)$/gm, '<oli data-n="$1">$2</oli>')
        .replace(/^- (.*)$/gm, '<uli>$1</uli>')
        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-       .replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+       .replace(/\*([^*\n]+(?:\n[^*\n]+)*)\*/g, '<em>$1</em>');
   // Inline-lähdeviitteet: [[12]] tai [[12, 13, 14]] → klikattava yläindeksi (avaa citShow('wf-N'))
   h = h.replace(/\[\[\s*([\d\s,]+?)\s*\]\]/g, (m, g) => {
     const links = g.split(',').map(x => x.trim()).filter(Boolean).map(n => {
@@ -1760,11 +1797,18 @@ function mdToHtml(md, refPrefix = 'wf') {
     `<a class="rlink" onclick="applyRecipeFilter('${qs.replace(/'/g, "\\'")}');return false;">${label}</a>`);
   h = h.replace(/(?:<uli>.*?<\/uli>\n?)+/gs, b => '<ul>' + b.replace(/<\/?uli>/g, m => m.includes('/') ? '</li>' : '<li>') + '</ul>');
   h = h.replace(/(?:<oli[^>]*>.*?<\/oli>\n?)+/gs, b => '<ol>' + b.replace(/<oli data-n="(\d+)">/g, '<li data-n="$1">').replace(/<\/oli>/g, '</li>') + '</ol>');
+  // Listan ryhmittely söi yhden rivinvaihdon — palautetaan kappaleraja, ettei
+  // listaa seuraava teksti jää ilman <p>-käärettä.
+  h = h.replace(/(<\/(?:ul|ol|table)>)\n(?=[^\n<])/g, '$1\n\n');
   return h.split(/\n{2,}/).map(p => /^<(h\d|ul|ol|table)/.test(p.trim()) ? p : `<p>${p}</p>`).join('\n');
 }
 
-let analysisSel = null;  // null = indeksinäkymä, muuten valitun analyysin id
-window.selAnalysis = s => { analysisSel = s; render(); scrollTo(0, 0); };
+// null = indeksinäkymä, muuten valitun analyysin id; syvälinkki #analyysi?aihe=<id>
+let analysisSel = (hashTab === 'analyysi' && (location.hash.match(/[?&]aihe=([\w-]+)/) || [])[1]) || null;
+function anlxHash() {
+  try { history.replaceState(null, '', '#analyysi' + (analysisSel ? '?aihe=' + analysisSel : '')); } catch (e) {}
+}
+window.selAnalysis = s => { analysisSel = s; anlxHash(); render(); scrollTo(0, 0); };
 window.jumpHeading = i => {
   const hs = document.querySelectorAll('#analysisProse h2');
   if (hs[i]) hs[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1822,6 +1866,8 @@ function anlxFigure(img) {
 
 function renderAnalyysi(el) {
   const metas = D.analysis.filter(a => !['analyysi-miksi-kalaa', 'analyysi-kulttuurit'].includes(a.id)).map(analysisMeta);
+  if (analysisSel && !metas.some(x => x.a.id === analysisSel)) analysisSel = null;  // tuntematon syvälinkki → indeksi
+  anlxHash();
   const chips = `<div class="chips analysis-chips">
     <button class="${!analysisSel ? 'on' : ''}" onclick="selAnalysis(null)">Kaikki aiheet (${metas.length})</button>
     ${metas.map(m => `<button class="${analysisSel === m.a.id ? 'on' : ''}" onclick="selAnalysis('${m.a.id}')">${esc(m.label)}</button>`).join('')}</div>`;
@@ -1878,7 +1924,10 @@ function renderAnalyysi(el) {
     body += '<h2>' + parts[i];
   }
   el.innerHTML = `${chips}
-    <button class="anlx-back" onclick="selAnalysis(null)">← Kaikki aiheet</button>
+    <div class="anlx-actionrow">
+      <button class="anlx-back" onclick="selAnalysis(null)">← Kaikki aiheet</button>
+      <button class="pv-copy" onclick="copyLink('#analyysi?aihe=${m.a.id}', this)" title="Kopioi jaettava linkki tähän oivallukseen">🔗 Kopioi linkki</button>
+    </div>
     ${heroHtml}
     <div class="anlx-lead-row">${distHtml}${toc}</div>
     <article class="prose anlx-prose" id="analysisProse">${body}
@@ -1928,6 +1977,7 @@ function renderLajit(el) {
 
 window.speciesShow = slug => {
   const s = D.species.find(x => x.slug === slug); if (!s) return;
+  popDeepLink('#lajit?laji=' + slug);
   const rr = speciesRecipes(slug);
   const others = D.items.filter(i => i.type !== 'recipe' && i.species_slug === slug);
   const g = others.filter(i => i.type === 'guide'), v = others.filter(i => i.type === 'video');
@@ -1942,6 +1992,7 @@ window.speciesShow = slug => {
       <span class="badge keitto badge-link" onclick="popClose();applyRecipeFilter('laji=${s.slug}')" title="Avaa Reseptit-sivu tämä laji suodatettuna">${rr.total} reseptiä →</span>
       <span class="badge guide badge-link" onclick="popClose();goKasittely('${s.slug}')" title="Avaa Käsittely-sivu tämä laji suodatettuna">${g.length} ohjetta →</span>
       <span class="badge video badge-link" onclick="popClose();goKasittely('${s.slug}')" title="Avaa Käsittely-sivu tämä laji suodatettuna">${v.length} videota →</span>
+      <button class="pv-copy" onclick="copyLink('#lajit?laji=${s.slug}', this)" title="Kopioi jaettava linkki tähän lajiin">🔗 Kopioi linkki</button>
     </div>
     ${s.extract ? `<p class="pop-def" style="white-space:pre-line">${esc(s.extract)}</p>` : '<p class="meta">Lajitietoa ei saatavilla.</p>'}
     ${rr.direct.length ? `<div class="srchead">Reseptit (${rr.direct.length})</div>${linklist(rr.direct, false)}` : ''}
@@ -2022,11 +2073,13 @@ window.gotoCulture = key => { tab = 'kulttuurit'; location.hash = 'kulttuurit'; 
 window.openCultureSources = () => { tab = 'lahteet'; lahteetMode = 'lahteet'; srcType = 'viite'; srcGroup = 'aihe'; srcQ = ''; location.hash = 'lahteet'; render(); scrollTo(0, 0); };
 window.cultShow = key => {
   const rg = ((D.cultures || {}).regions || []).find(r => r.key === key); if (!rg) return;
+  popDeepLink('#kulttuurit?alue=' + key);
   const dishes = (rg.dishes || []).map(d => `<span class="cult-dishchip" title="${esc(d.desc)}">${d.soup ? '🍲 ' : ''}${esc(d.name)}</span>`).join('');
   const insights = (rg.insights || []).map(i => `<li>${esc(i)}</li>`).join('');
   const srcs = (rg.sources || []).map(s => `<li><a onclick="citShow('cu-${s.id}')">${esc(s.title)}</a> <span class="meta">(${esc(s.publisher)})</span></li>`).join('');
   document.getElementById('popContent').innerHTML = `
     <h3 class="pop-title">${rg.emoji} ${esc(rg.name)}</h3>
+    <div class="pop-badges"><button class="pv-copy" onclick="copyLink('#kulttuurit?alue=${rg.key}', this)" title="Kopioi jaettava linkki tähän kulttuurialueeseen">🔗 Kopioi linkki</button></div>
     <p class="pop-def">${esc(rg.blurb)}</p>
     <div class="srchead">Tunnusruoat <span class="meta">(🍲 = keitto · vie hiiri ruoan päälle)</span></div><div>${dishes}</div>
     <div class="srchead">Nostot</div><ul class="linklist">${insights}</ul>
@@ -2122,7 +2175,7 @@ const QA = [
     { q: 'Mitä "Jakaumat" tarkoittaa?', a: 'Jokainen jakaumapalkki (laji, valmistustapa, aineskategoria, aines, lisukkeet, kesto, lähde) on samalla suodatin. Klikkaa palkkia porautuaksesi — luvut kertovat, montako reseptiä valintaan osuu.' },
     { q: 'Miten löydän reseptit tietyn lisukkeen kanssa (peruna, riisi, leipä…)?', a: 'Avaa <b>Suodattimet & jakaumat</b> ja klikkaa <b>Lisukkeet</b>-palkista haluamaasi (Peruna, Riisi, Pasta & nuudeli, Leipä & sämpylä, Salaatti, Muu viljalisäke). Lisuke on parsittu erikseen jokaisen reseptin aineksista ja otsikosta.', ex: ['Näytä: perunan kera', 'lisuke=peruna'] },
     { q: 'Miten löydän nopeat reseptit?', a: 'Avaa jakaumat ja klikkaa Reseptin kesto -kohdasta esim. "≤ 15 min" tai "16–30 min".', ex: ['Näytä: ≤ 15 min', 'kesto=0'] },
-    { q: 'Voinko jakaa suodatetun näkymän linkkinä?', a: 'Kyllä. Selaimen osoiteriville tallentuu suodatustila (esim. <code>#reseptit?tapa=savustus&laji=siika</code>), jonka voit kopioida ja jakaa.' },
+    { q: 'Voinko jakaa suodatetun näkymän linkkinä?', a: 'Kyllä. Paina 🔗 <b>Kopioi linkki</b> -nappia, jonka löydät Reseptit- ja Kalan valmistelu -sivujen työkalupalkista, yksittäisestä reseptistä, Oivallukset-koosteesta sekä laji- ja kulttuuripopupeista — linkki avaa saman näkymän suodattimineen. Osoiterivin voi kopioida myös suoraan (esim. <code>#reseptit?tapa=savustus&laji=siika</code>).' },
   ]},
   { cat: 'Allergiat & ruokavaliot', items: [
     { q: 'Voinko sulkea pois allergeeneja tai ei-toivottuja aineksia?', a: 'Kyllä. Reseptit-sivun <b>🚫 Ilman:</b> -rivistä voit sulkea pois maidon & juuston, pähkinät, viljan/gluteenin, juurekset, sipulin tai kananmunan. Reseptit, joissa on kyseisiä aineksia, suodatetaan pois.', ex: ['Kokeile: ilman maitoa', 'ilman=maito'] },
@@ -2604,13 +2657,15 @@ function pvPrepBlock(it) {
 window.pvSetView = v => { pvView = v; pvRefresh(); };
 window.pvSetDensity = d => { pvDensity = d; pvRefresh(); };
 function pvRefresh() { if (pvCurId) showDetail(pvCurId); }
-window.pvCopyLink = async (id, btn) => {
-  const url = location.origin + location.pathname + '#resepti=' + id;
+// Jaettava linkki mihin tahansa näkymään: kopioi annettu hash täytenä URLina.
+window.copyLink = async (hash, btn) => {
+  const url = location.origin + location.pathname + hash;
   let ok = false;
   try { await navigator.clipboard.writeText(url); ok = true; } catch (e) { }
   if (!ok) { try { const ta = document.createElement('textarea'); ta.value = url; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove(); } catch (e) { } }
   if (btn) { const o = btn.innerHTML; btn.innerHTML = ok ? '✓ Linkki kopioitu' : '⚠ Kopioi käsin'; if (!ok) prompt('Kopioi linkki:', url); setTimeout(() => { btn.innerHTML = o; }, 1600); }
 };
+window.pvCopyLink = (id, btn) => copyLink('#resepti=' + id, btn);
 
 // Dialogin ✨-laatikko: mitkä näytetyt attribuutit ovat pääteltyjä, millä
 // varmuudella ja mihin päätelmä perustuu. Suora data ei koskaan saa laatikkoa.
@@ -4093,6 +4148,13 @@ dlg.addEventListener('close', () => {
 render();
 // Avaa syvälinkitetty resepti latauksessa
 if (pvHashRecipe) { const it = D.items.find(i => i.id === pvHashRecipe); if (it) { pvPrevHash = '#reseptit'; showDetail(pvHashRecipe); } }
+// Syvälinkitetyt popupit: #lajit?laji=<slug> ja #kulttuurit?alue=<key>.
+// Vasta DOMContentLoadedissa — popOverlay liitetään dokumenttiin silloin.
+window.addEventListener('DOMContentLoaded', () => {
+  const dl = (k) => (location.hash.match(new RegExp('[?&]' + k + '=([\\w-]+)')) || [])[1];
+  if (tab === 'lajit' && dl('laji')) { popPrevHash = '#lajit'; speciesShow(dl('laji')); }
+  if (tab === 'kulttuurit' && dl('alue')) { popPrevHash = '#kulttuurit'; cultShow(dl('alue')); }
+});
 </script>
 </body>
 </html>
