@@ -1834,11 +1834,12 @@ function analysisMeta(a) {
 // --- Aiheen kuvat & jakaumat (grafiikkaa Oivalluksiin, poimitaan kannasta) ---
 function analysisTopicRecipes(a) {
   const sl = a.species_slug || '', tp = (a.topic || '') + ' ' + (a.id || '');
-  const wantKeitto = /keitto/i.test(tp), wantSavu = /savust/i.test(tp);
+  const wantKeitto = /keitto/i.test(tp), wantSavu = /savust/i.test(tp), wantGrilli = /grill/i.test(tp);
   return D.items.filter(i => i.type === 'recipe' && (
     i.species_slug === sl ||
     (wantKeitto && /keitto/i.test(i.method || '')) ||
-    (wantSavu && /savust/i.test(i.method || ''))));
+    (wantSavu && /savust/i.test(i.method || '')) ||
+    (wantGrilli && /grilli/i.test(i.method || ''))));
 }
 function analysisImages(a, n) {
   const seen = new Set(), out = [];
